@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 2. Переменные и типы данных — Курс C#</title>
+  <meta name="description" content="Типы int, double, decimal, string, bool, char, вывод типа через var, строки и преобразования.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <div class="readbar" id="readbar"></div>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="index.html">Все уроки</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <main class="lesson-layout">
+    <aside class="sidebar">
+      <p class="sidebar__title">Уроки</p>
+      <ol id="sidebar-list"></ol>
+      <a class="sidebar__back" href="index.html">← К списку уроков</a>
+    </aside>
+
+    <article class="lesson">
+      <p class="eyebrow">Урок 02 · 20 минут · основы</p>
+      <h1>Переменные и типы данных</h1>
+      <p class="lead">Переменная — это коробка с именем. Тип — это форма коробки: в int не влезет текст, а в string не влезет число без преобразования. Разберёмся, какие типы есть и когда какой брать.</p>
+
+      <div class="callout callout--tip">
+        <strong>Смотреть или читать</strong>
+        Есть <a href="video-02.html">видеоразбор этого урока</a>: три переменные, подсветка типов и ловушка с decimal.
+      </div>
+
+      <h2>Переменная — коробка с именем</h2>
+      <p>Объявление всегда состоит из трёх частей: тип, имя, значение.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">int age = 17;              // целое число
+double price = 1299.90;    // дробное
+string nick = "sneg";      // текст
+bool isOnline = true;      // да или нет
+
+Console.WriteLine(age);    // 17
+Console.WriteLine(nick);   // sneg</code></pre>
+      </div>
+
+      <p>Значение можно менять сколько угодно, но тип — нет. Если переменная объявлена как <code>int</code>, положить в неё строку не получится: компилятор остановит ещё до запуска.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">int score = 100;
+score = score + 50;        // теперь 150
+score += 10;               // сокращённая запись: тоже 160
+
+// int score = "сто";      // ошибка: нельзя положить string в int
+// score = 1.5;            // ошибка: 1.5 не помещается в int</code></pre>
+      </div>
+
+      <h2>Основные типы</h2>
+
+      <table>
+        <thead>
+          <tr><th>Тип</th><th>Что хранит</th><th>Пример</th><th>Когда брать</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>int</code></td><td>целое до ±2,1 млрд</td><td><code>42</code></td><td>по умолчанию для целых</td></tr>
+          <tr><td><code>long</code></td><td>очень большое целое</td><td><code>9_000_000_000</code></td><td>когда int уже мало</td></tr>
+          <tr><td><code>double</code></td><td>дробное, ~15 знаков</td><td><code>3.14</code></td><td>измерения, графика, физика</td></tr>
+          <tr><td><code>decimal</code></td><td>дробное с точностью</td><td><code>1299.90m</code></td><td>деньги, цены, проценты</td></tr>
+          <tr><td><code>bool</code></td><td>только true или false</td><td><code>true</code></td><td>флаги, условия</td></tr>
+          <tr><td><code>char</code></td><td>один символ</td><td><code>'A'</code></td><td>редко, одна буква</td></tr>
+          <tr><td><code>string</code></td><td>текст любой длины</td><td><code>"привет"</code></td><td>имена, сообщения</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn">
+        <strong>double и деньги — плохая пара</strong>
+        <code>0.1 + 0.2</code> в double даёт <code>0.30000000000000004</code>: двоичная дробь не может точно представить 0.1. Для цен и балансов бери <code>decimal</code> — он медленнее, зато считает точно. Литерал пишется с суффиксом <code>m</code>.
+      </div>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">decimal wallet = 1299.90m;      // m в конце обязательна
+decimal fee = wallet * 0.1m;    // 129.990
+Console.WriteLine(fee);         // 129,990
+
+double d = 0.1 + 0.2;
+Console.WriteLine(d);           // 0.30000000000000004</code></pre>
+      </div>
+
+      <p>Заметил запятую в выводе <code>129,990</code>? C# печатает числа по правилам системы — с запятой в русской локали. В самом коде разделитель всегда точка.</p>
+
+      <h2>Где лежат данные</h2>
+      <p>Типы делятся на две большие группы, и это влияет на то, как работает присваивание.</p>
+
+      <figure class="figure">
+        <img src="assets/img/types.svg" alt="Схема: значимые типы хранят значение внутри переменной в стеке, ссылочные — адрес объекта в куче" width="900" height="440">
+        <figcaption>Слева значение лежит внутри переменной. Справа в переменной только адрес, а сам объект — отдельно.</figcaption>
+      </figure>
+
+      <p>Для <code>int</code>, <code>double</code>, <code>bool</code> присваивание копирует само значение. Для <code>string</code> и объектов классов копируется ссылка: две переменные могут указывать на один и тот же объект. На практике это значит, что изменение через одну «видно» через другую.</p>
+
+      <h2>var — не «без типа», а «выведи сам»</h2>
+      <p>Ключевое слово <code>var</code> позволяет не писать тип слева: компилятор выведет его из правой части. Тип остаётся жёстким, просто не назван явно.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">var city = "Екатеринбург";   // string
+var score = 128;             // int
+var ratio = 0.5;             // double
+
+// var x;                    // ошибка: непонятно, какой тип
+// x = 10;</code></pre>
+      </div>
+
+      <p>Правило простое: <code>var</code> уместен, когда тип очевиден из правой части. Если читателю кода приходится гадать — пиши тип явно.</p>
+
+      <h2>Строки</h2>
+      <p>Строки в C# неизменяемые: любая «правка» создаёт новую строку. Четыре вещи, которые нужны постоянно:</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">string first = "sneg";
+string last = "snegovik";
+
+string full = first + " " + last;      // склейка через +
+string msg = $"{full}, привет!";       // интерполяция: значение в {фигурных}
+string path = @"C:\Users\ravae";       // verbatim: обратный слэш не escape
+
+Console.WriteLine(full.Length);        // 14 — длина в символах
+Console.WriteLine(msg.ToUpper());      // ВСЁ ЗАГЛАВНЫМИ
+Console.WriteLine(full.Contains("sneg"));   // True</code></pre>
+      </div>
+
+      <p>Интерполяция с <code>$</code> — почти всегда удобнее склейки. Внутри фигурных скобок можно писать целые выражения: <code>$"Итого: {price * 2}"</code>.</p>
+
+      <h2>Преобразование типов</h2>
+      <p>Число и строка — разные типы, между ними нужен мост. Способов несколько, и не все безопасны.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">double d = 3.9;
+int i = (int)d;                  // 3 — дробная часть отбрасывается, не округляется
+
+string text = "42";
+int a = int.Parse(text);         // 42, но упадёт на "сорок"
+int b = Convert.ToInt32(text);   // то же самое
+
+// безопасный вариант: не падает, а возвращает false
+if (int.TryParse(text, out int value))
+{
+    Console.WriteLine(value + 1);    // 43
+}</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <strong>Что выбрать</strong>
+        Данные пришли от пользователя — всегда <code>TryParse</code>. Это единственный вариант, который не превращает опечатку в аварию программы.
+      </div>
+
+      <h2>Как называть переменные</h2>
+      <ul>
+        <li><strong>camelCase</strong> для переменных и параметров: <code>userName</code>, <code>totalPrice</code>.</li>
+        <li><strong>PascalCase</strong> для классов, методов и свойств: <code>Player</code>, <code>OpenCase()</code>.</li>
+        <li>Имя начинается с буквы или <code>_</code>, без пробелов и дефисов, без кириллицы.</li>
+        <li>Имя должно отвечать на вопрос «что здесь лежит»: <code>balance</code>, а не <code>b</code>.</li>
+      </ul>
+
+      <div class="quiz" data-correct="1">
+        <div class="quiz__label">Проверь себя</div>
+        <div class="quiz__q">Ты пишешь магазин скинов и хранишь цену предмета. Какой тип взять?</div>
+        <ul class="quiz__opts">
+          <li><button class="quiz__opt" type="button">double — он быстрее</button></li>
+          <li><button class="quiz__opt" type="button">decimal — он не теряет копейки</button></li>
+          <li><button class="quiz__opt" type="button">float — он самый компактный</button></li>
+          <li><button class="quiz__opt" type="button">string — чтобы точно ничего не потерялось</button></li>
+        </ul>
+        <div class="quiz__result" data-explain="decimal хранит десятичные дроби без двоичной погрешности, поэтому именно он используется для денег. double годится для измерений, где важна скорость, а не копейка."></div>
+      </div>
+
+      <div class="task">
+        <div class="task__label">Задание</div>
+        <p>Спроси у пользователя имя и год рождения, посчитай примерный возраст и выведи одну строку: <code>sneg, тебе примерно 17 лет.</code></p>
+
+        <details class="solution">
+          <summary>Показать решение</summary>
+          <div class="solution__body">
+            <div class="code">
+              <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+              <pre><code class="lang-cs">Console.Write("Имя: ");
+string name = Console.ReadLine() ?? "";
+
+Console.Write("Год рождения: ");
+string input = Console.ReadLine() ?? "";
+
+if (int.TryParse(input, out int year))
+{
+    int age = DateTime.Now.Year - year;
+    Console.WriteLine($"{name}, тебе примерно {age} лет.");
+}
+else
+{
+    Console.WriteLine("Это не похоже на год.");
+}</code></pre>
+            </div>
+            <p><code>?? ""</code> подставляет пустую строку, если пользователь ничего не ввёл, — иначе переменная была бы <code>null</code>.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="done-row">
+        <button class="btn-done" type="button" data-done="2">Отметить урок пройденным</button>
+        <span class="done-hint">Прогресс сохраняется в браузере</span>
+      </div>
+
+      <nav class="lesson-nav" id="lesson-nav"></nav>
+    </article>
+  </main>
+
+  <footer class="footer">Курс C# · учебные материалы · 2026</footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

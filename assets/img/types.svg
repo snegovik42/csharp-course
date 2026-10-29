@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" width="900" height="440" role="img" aria-labelledby="typesTitle">
+  <title id="typesTitle">Значимые типы хранят значение в переменной, ссылочные — адрес объекта в куче</title>
+
+  <defs>
+    <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0E7C6B"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="440" fill="#F8F6FC"/>
+  <text x="24" y="42" font-family="'Segoe UI', Arial, sans-serif" font-size="17" font-weight="600" fill="#1B1725">Где на самом деле лежат данные</text>
+  <text x="24" y="68" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#5F5872">Тип отвечает не только на вопрос «что внутри», но и на вопрос «где это живёт».</text>
+
+  <!-- Стек -->
+  <rect x="24" y="86" width="420" height="300" rx="12" fill="#FFFFFF" stroke="#D8D2E8" stroke-width="1.5"/>
+  <text x="44" y="116" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#68217A">ЗНАЧИМЫЕ ТИПЫ · СТЕК</text>
+
+  <g font-family="Consolas, 'Cascadia Mono', monospace" font-size="12.5">
+    <!-- строка 1 -->
+    <rect x="44" y="132" width="250" height="42" rx="8" fill="#FBFAFE" stroke="#D8D2E8" stroke-width="1.3"/>
+    <line x1="194" y1="132" x2="194" y2="174" stroke="#D8D2E8" stroke-width="1.3"/>
+    <text x="60" y="158" fill="#1B1725">age : int</text>
+    <text x="222" y="159" text-anchor="middle" font-weight="700" fill="#0A5A4E">42</text>
+    <!-- строка 2 -->
+    <rect x="44" y="182" width="250" height="42" rx="8" fill="#FBFAFE" stroke="#D8D2E8" stroke-width="1.3"/>
+    <line x1="194" y1="182" x2="194" y2="224" stroke="#D8D2E8" stroke-width="1.3"/>
+    <text x="60" y="208" fill="#1B1725">price : double</text>
+    <text x="222" y="209" text-anchor="middle" font-weight="700" fill="#0A5A4E">1299.9</text>
+    <!-- строка 3 -->
+    <rect x="44" y="232" width="250" height="42" rx="8" fill="#FBFAFE" stroke="#D8D2E8" stroke-width="1.3"/>
+    <line x1="194" y1="232" x2="194" y2="274" stroke="#D8D2E8" stroke-width="1.3"/>
+    <text x="60" y="258" fill="#1B1725">isOpen : bool</text>
+    <text x="222" y="259" text-anchor="middle" font-weight="700" fill="#0A5A4E">true</text>
+  </g>
+
+  <g font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#5F5872">
+    <text x="44" y="308">Значение лежит прямо внутри переменной.</text>
+    <text x="44" y="328">Скопировал переменную — скопировал и значение.</text>
+  </g>
+
+  <!-- Куча -->
+  <rect x="470" y="86" width="406" height="300" rx="12" fill="#FFFFFF" stroke="#D8D2E8" stroke-width="1.5"/>
+  <text x="490" y="116" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#0E7C6B">ССЫЛОЧНЫЕ ТИПЫ · КУЧА</text>
+
+  <g font-family="Consolas, 'Cascadia Mono', monospace" font-size="12.5">
+    <rect x="490" y="132" width="140" height="42" rx="8" fill="#FBFAFE" stroke="#D8D2E8" stroke-width="1.3"/>
+    <text x="502" y="158" fill="#1B1725">name : string</text>
+    <line x1="630" y1="153" x2="658" y2="153" stroke="#0E7C6B" stroke-width="1.8" marker-end="url(#a3)"/>
+    <rect x="666" y="132" width="190" height="42" rx="8" fill="#E4F2EF" stroke="#0E7C6B" stroke-width="1.5"/>
+    <text x="678" y="158" fill="#0A5A4E">«Привет, мир»</text>
+
+    <rect x="490" y="196" width="140" height="42" rx="8" fill="#FBFAFE" stroke="#D8D2E8" stroke-width="1.3"/>
+    <text x="502" y="222" fill="#1B1725">player : Player</text>
+    <line x1="630" y1="217" x2="658" y2="217" stroke="#0E7C6B" stroke-width="1.8" marker-end="url(#a3)"/>
+    <rect x="666" y="188" width="190" height="60" rx="8" fill="#E4F2EF" stroke="#0E7C6B" stroke-width="1.5"/>
+    <text x="678" y="212" fill="#0A5A4E">Nick: «sneg»</text>
+    <text x="678" y="233" fill="#0A5A4E">Score: 128</text>
+  </g>
+
+  <g font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#5F5872">
+    <text x="490" y="276">В переменной только адрес объекта.</text>
+    <text x="490" y="296">Два имени могут смотреть на один и тот же объект —</text>
+    <text x="490" y="316">изменишь через одно, увидишь через другое.</text>
+  </g>
+
+  <!-- Пояснение снизу -->
+  <rect x="24" y="398" width="852" height="30" rx="8" fill="#EFE7F7"/>
+  <text x="40" y="418" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#4C1557">int, double, bool, char, struct — значения. string, массивы, классы — ссылки.</text>
+</svg>

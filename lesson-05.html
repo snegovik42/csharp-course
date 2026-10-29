@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 5. Методы — Курс C#</title>
+  <meta name="description" content="Как объявлять методы, параметры и аргументы, void и return, значения по умолчанию, out, перегрузка.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <div class="readbar" id="readbar"></div>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="index.html">Все уроки</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <main class="lesson-layout">
+    <aside class="sidebar">
+      <p class="sidebar__title">Уроки</p>
+      <ol id="sidebar-list"></ol>
+      <a class="sidebar__back" href="index.html">← К списку уроков</a>
+    </aside>
+
+    <article class="lesson">
+      <p class="eyebrow">Урок 05 · 18 минут · структура</p>
+      <h1>Методы</h1>
+      <p class="lead">Метод — это кусок программы с именем. Написал один раз — вызываешь сколько нужно. Вместо копипасты появляется структура.</p>
+
+      <div class="callout callout--tip">
+        <strong>Смотреть или читать</strong>
+        Есть <a href="video-05.html">видеоразбор этого урока</a>: вызов, объявление и ловушка целочисленного деления.
+      </div>
+
+      <h2>Зачем это нужно</h2>
+      <p>Представь, что расчёт скидки понадобился в пяти местах. Скопировать пять раз — плохо: изменишь формулу, придётся править все пять копий и надеяться, что ничего не забыл. Метод решает это одним движением.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">PrintHeader();
+Console.WriteLine("Кейс «Стартовый» — 100₽");
+Console.WriteLine(new string('-', 30));
+
+PrintHeader();
+Console.WriteLine("Кейс «Ножевой» — 1100₽");
+
+// локальная функция: объявляется в конце файла, вызывается где угодно
+static void PrintHeader()
+{
+    Console.WriteLine("=== КЕЙСЫ CS2 ===");
+}</code></pre>
+      </div>
+
+      <h2>Параметры и возвращаемое значение</h2>
+      <p>Метод может принимать данные (параметры) и отдавать результат (<code>return</code>).</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">double total = Discount(1000, 10);
+Console.WriteLine(total);          // 900
+
+static double Discount(double price, int percent)
+{
+    return price * (1 - percent / 100.0);
+}</code></pre>
+      </div>
+
+      <figure class="figure">
+        <img src="assets/img/methods.svg" alt="Схема вызова метода: аргументы из Main уходят в параметры, результат возвращается обратно" width="900" height="400">
+        <figcaption>Параметры — это имена внутри метода, аргументы — конкретные значения при вызове.</figcaption>
+      </figure>
+
+      <p>Разберём сигнатуру: <code>static double Discount(double price, int percent)</code>.</p>
+      <ul>
+        <li><code>double</code> перед именем — тип того, что метод вернёт.</li>
+        <li><code>Discount</code> — имя, всегда с большой буквы, обычно глагол: <code>Calculate</code>, <code>GetPrice</code>, <code>Print</code>.</li>
+        <li>В скобках — параметры с типами. При вызове на их место попадают аргументы: <code>1000</code> и <code>10</code>.</li>
+        <li><code>return</code> отдаёт результат и сразу завершает метод.</li>
+      </ul>
+
+      <div class="callout callout--warn">
+        <strong>Делить целые — отдельная ловушка</strong>
+        <code>percent / 100</code> при целых даст <code>0</code>: десять делить на сто целочисленно — это ноль. Поэтому в примере написано <code>100.0</code> — так деление идёт по правилам <code>double</code>.
+      </div>
+
+      <h2>void — когда возвращать нечего</h2>
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">SayHello("sneg");
+
+if (IsAdult(17))
+{
+    Console.WriteLine("Можно");
+}
+
+static void SayHello(string name)
+{
+    Console.WriteLine($"Привет, {name}!");
+}
+
+static bool IsAdult(int age)
+{
+    return age >= 18;
+}</code></pre>
+      </div>
+
+      <p><code>void</code> означает «ничего не возвращает» — метод просто что-то делает. Такой метод нельзя положить в переменную.</p>
+
+      <h2>Значения по умолчанию</h2>
+      <p>Параметру можно задать значение, и тогда при вызове его можно не указывать.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">PrintPrice(1299.9);                        // 1299,90 ₽
+PrintPrice(1299.9, "$");                   // 1299,90 $
+PrintPrice(price: 500, currency: "$");     // именованные аргументы
+
+static void PrintPrice(double price, string currency = "₽")
+{
+    Console.WriteLine($"{price:F2} {currency}");
+}</code></pre>
+      </div>
+
+      <h2>out — когда нужно вернуть два ответа</h2>
+      <p>Иногда метод должен сообщить и результат, и получилось ли вообще. Так устроен <code>TryParse</code>: возвращает <code>bool</code>, а значение отдаёт через <code>out</code>.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">if (TryDivide(10, 4, out double value))
+{
+    Console.WriteLine(value);          // 2.5
+}
+
+if (!TryDivide(10, 0, out _))
+{
+    Console.WriteLine("На ноль делить нельзя");
+}
+
+static bool TryDivide(int a, int b, out double result)
+{
+    if (b == 0)
+    {
+        result = 0;        // out-параметр обязан быть заполнен при любом выходе
+        return false;
+    }
+
+    result = (double)a / b;
+    return true;
+}</code></pre>
+      </div>
+
+      <h2>Перегрузка: одно имя, разные параметры</h2>
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">Console.WriteLine(Add(2, 3));        // 5
+Console.WriteLine(Add(2.5, 3.5));    // 6
+
+static int Add(int a, int b) => a + b;
+static double Add(double a, double b) => a + b;</code></pre>
+      </div>
+
+      <p>Компилятор сам выбирает подходящую версию по типам аргументов. Запись <code>=&gt; выражение</code> — короткая форма метода из одной строки.</p>
+
+      <h2>Как писать хорошие методы</h2>
+      <ul>
+        <li>Один метод — одна задача. Если в названии появляется «и», пора делить.</li>
+        <li>Имя отвечает на вопрос «что делает»: <code>CalculateTotal</code>, а не <code>Data1</code>.</li>
+        <li>Длиннее двадцати строк — повод присмотреться: скорее всего, внутри спрятаны два метода.</li>
+        <li>Метод не должен печатать и считать одновременно: посчитать и вернуть — чище, чем молча напечатать.</li>
+      </ul>
+
+      <div class="quiz" data-correct="0">
+        <div class="quiz__label">Проверь себя</div>
+        <div class="quiz__q">Метод вызывается в первой строке файла, а объявлен в последней. Это ошибка?</div>
+        <ul class="quiz__opts">
+          <li><button class="quiz__opt" type="button">Нет — порядок объявления в файле не важен</button></li>
+          <li><button class="quiz__opt" type="button">Да — метод должен быть объявлен выше вызова</button></li>
+          <li><button class="quiz__opt" type="button">Да, но только если метод возвращает void</button></li>
+        </ul>
+        <div class="quiz__result" data-explain="Компилятор читает файл целиком перед выполнением, поэтому метод можно объявлять где угодно и вызывать до объявления. Это не скрипт, выполняющийся построчно."></div>
+      </div>
+
+      <div class="task">
+        <div class="task__label">Задание</div>
+        <p>Напиши метод <code>Average(int[] numbers)</code>, который возвращает среднее арифметическое. И второй метод — <code>PrintLine(char symbol, int length)</code>, который печатает линию из символов. Используй оба в одной программе.</p>
+
+        <details class="solution">
+          <summary>Показать решение</summary>
+          <div class="solution__body">
+            <div class="code">
+              <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+              <pre><code class="lang-cs">int[] marks = { 5, 4, 3, 5, 4 };
+
+PrintLine('=', 24);
+Console.WriteLine($"Средний балл: {Average(marks):F2}");
+PrintLine('=', 24);
+
+static double Average(int[] numbers)
+{
+    if (numbers.Length == 0)
+    {
+        return 0;
+    }
+
+    int sum = 0;
+    foreach (int n in numbers)
+    {
+        sum += n;
+    }
+
+    return (double)sum / numbers.Length;
+}
+
+static void PrintLine(char symbol, int length)
+{
+    Console.WriteLine(new string(symbol, length));
+}</code></pre>
+            </div>
+            <p>Проверка на пустой массив — не паранойя: деление на ноль элементов уронило бы программу.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="done-row">
+        <button class="btn-done" type="button" data-done="5">Отметить урок пройденным</button>
+        <span class="done-hint">Прогресс сохраняется в браузере</span>
+      </div>
+
+      <nav class="lesson-nav" id="lesson-nav"></nav>
+    </article>
+  </main>
+
+  <footer class="footer">Курс C# · учебные материалы · 2026</footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

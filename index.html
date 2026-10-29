@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Курс C# с нуля — шесть уроков с примерами</title>
+  <meta name="description" content="Курс по C# для начинающих: от первой программы до классов и наследования. Картинки, примеры кода, задания и мини-тесты.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="#program">Программа</a>
+      <a class="topbar__link" href="#start">С чего начать</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <span class="hero__eyebrow">Курс для начинающих</span>
+      <h1>Учим C# с нуля — по-человечески</h1>
+      <p class="hero__lead">Шесть уроков: от «что такое .NET» до собственных классов. С картинками, живыми примерами и заданиями, которые можно запустить прямо сейчас.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="lesson-01.html">Начать с первого урока</a>
+        <a class="btn btn--ghost" href="#program">Программа курса</a>
+      </div>
+    </div>
+    <div class="hero__img">
+      <img src="assets/img/hero.svg" alt="Окно редактора с кодом на C# и консоль, где после запуска выводится «Привет, мир!»" width="900" height="420">
+    </div>
+  </section>
+
+  <section class="section" style="padding-bottom: 0;">
+    <div class="section__head">
+      <h2>Видеоразборы</h2>
+      <span class="chip chip--accent">6 серий · с паузой и перемоткой</span>
+    </div>
+
+    <a class="video-promo" href="video-01.html">
+      <div>
+        <span class="chip chip--accent">Начать здесь</span>
+        <h2>Первая программа: разбор по шагам</h2>
+        <p>49 секунд: набор кода, консоль, пояснения по частям строки и проверка посередине.</p>
+      </div>
+      <span class="video-promo__play" aria-hidden="true">▶</span>
+    </a>
+
+    <div class="video-grid">
+      <a class="vcard" href="video-02.html">
+        <span class="vcard__play" aria-hidden="true">▶</span>
+        <span class="vcard__text"><span class="vcard__num">02 · 0:44</span><span class="vcard__title">int, string, decimal</span></span>
+      </a>
+      <a class="vcard" href="video-03.html">
+        <span class="vcard__play" aria-hidden="true">▶</span>
+        <span class="vcard__text"><span class="vcard__num">03 · 0:50</span><span class="vcard__title">Ветвление и цикл</span></span>
+      </a>
+      <a class="vcard" href="video-04.html">
+        <span class="vcard__play" aria-hidden="true">▶</span>
+        <span class="vcard__text"><span class="vcard__num">04 · 0:50</span><span class="vcard__title">Массив и список</span></span>
+      </a>
+      <a class="vcard" href="video-05.html">
+        <span class="vcard__play" aria-hidden="true">▶</span>
+        <span class="vcard__text"><span class="vcard__num">05 · 0:44</span><span class="vcard__title">Метод и return</span></span>
+      </a>
+      <a class="vcard" href="video-06.html">
+        <span class="vcard__play" aria-hidden="true">▶</span>
+        <span class="vcard__text"><span class="vcard__num">06 · 0:54</span><span class="vcard__title">Класс и private set</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="program">
+    <div class="section__head">
+      <h2>Программа курса</h2>
+      <div class="progress-box">
+        <span id="progress-text">0 из 6</span>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <a class="video-promo" href="module-02.html">
+      <div>
+        <span class="chip">Модуль 2</span>
+        <h2>Надёжный код: исключения, файлы, LINQ</h2>
+        <p>Шесть уроков о том, что делать, когда данные приходят извне. Урок 7 уже готов.</p>
+      </div>
+      <span class="video-promo__play" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <section class="section" id="start">
+    <div class="section__head">
+      <h2>Что понадобится</h2>
+    </div>
+    <div class="cards">
+      <div class="card" style="cursor: default;">
+        <div class="card__top"><span class="card__num">ШАГ 1</span><span class="chip chip--accent">обязательно</span></div>
+        <h3>.NET SDK</h3>
+        <p>Бесплатный набор инструментов, который компилирует и запускает код на C#. На Windows ставится одной командой.</p>
+        <div class="code">
+          <div class="code__bar"><span>PowerShell</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+          <pre><code class="lang-cs">winget install Microsoft.DotNet.SDK.8</code></pre>
+        </div>
+        <div class="card__meta"><span>Проверка: <code>dotnet --version</code></span></div>
+      </div>
+
+      <div class="card" style="cursor: default;">
+        <div class="card__top"><span class="card__num">ШАГ 2</span><span class="chip">по желанию</span></div>
+        <h3>Редактор</h3>
+        <p>Visual Studio 2022 Community или VS Code с расширением C# Dev Kit. Для первых уроков хватит и обычного блокнота, но в редакторе видно ошибки сразу.</p>
+        <div class="card__meta"><span>Консольные проекты, без установки пакетов</span></div>
+      </div>
+
+      <div class="card" style="cursor: default;">
+        <div class="card__top"><span class="card__num">ШАГ 3</span><span class="chip">по желанию</span></div>
+        <h3>Терминал</h3>
+        <p>Одна папка на все эксперименты. Создал проект, зашёл в него, выполнил <code>dotnet run</code> — и смотришь, что вышло.</p>
+        <div class="card__meta"><span>Windows Terminal, PowerShell или cmd</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Курс C# · учебные материалы · 2026
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

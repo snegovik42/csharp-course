@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Видеоурок. Переменные и типы — Курс C#</title>
+  <meta name="description" content="Интерактивный видеоразбор переменных в C#: int, string, decimal, интерполяция строк.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/player.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="index.html">Все уроки</a>
+      <a class="topbar__link" href="lesson-02.html">Урок 2 текстом</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <main class="video-page">
+    <p class="eyebrow">Видеоурок · 44 секунды</p>
+    <h1>Переменные: int, string, decimal</h1>
+    <p class="lead">Три коробки разной формы и одна строка вывода, в которой все значения встают на свои места. С подсветкой типа на каждом шаге.</p>
+
+    <section class="player" data-script="v2" aria-label="Интерактивный видеоурок">
+      <div class="stage">
+        <span class="stage__badge" id="badge">Вступление</span>
+
+        <div class="pane">
+          <div class="pane__bar">
+            <span class="pane__dots"><i></i><i></i><i></i></span>
+            <span>Program.cs</span>
+          </div>
+          <pre class="pane__body" id="code-body"></pre>
+        </div>
+
+        <div class="pane">
+          <div class="pane__bar"><span>Терминал</span></div>
+          <pre class="pane__body pane__body--out" id="out-body"></pre>
+        </div>
+
+        <button class="stage__play" id="big-play" type="button" aria-label="Начать урок">▶</button>
+
+        <div class="checkpoint" id="checkpoint" hidden>
+          <div class="checkpoint__card">
+            <p class="checkpoint__label">Проверка</p>
+            <p class="checkpoint__q" id="cp-q"></p>
+            <div class="checkpoint__opts" id="cp-opts"></div>
+            <p class="checkpoint__res" id="cp-res"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cc">
+        <span class="cc__tag">СУБТИТРЫ</span>
+        <span class="cc__text" id="cc-text"></span>
+      </div>
+
+      <div class="ctl">
+        <button class="ctl__btn" id="btn-play" type="button" aria-label="Играть">▶</button>
+        <span class="ctl__time"><span id="t-cur">0:00</span> / <span id="t-dur">0:44</span></span>
+
+        <div class="track" id="track" role="slider" tabindex="0" aria-label="Позиция урока" aria-valuemin="0" aria-valuemax="44" aria-valuenow="0">
+          <div class="track__rail"><div class="track__fill" id="fill"></div></div>
+          <span class="track__knob" id="knob"></span>
+          <div class="track__marks" id="marks"></div>
+        </div>
+
+        <select class="ctl__speed" id="speed" aria-label="Скорость воспроизведения">
+          <option value="0.75">0.75×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.5">1.5×</option>
+          <option value="2">2×</option>
+        </select>
+
+        <button class="ctl__btn" id="btn-restart" type="button" aria-label="Начать сначала">↺</button>
+      </div>
+
+      <ol class="chapters" id="chapters"></ol>
+    </section>
+
+    <h2>Что мы разобрали</h2>
+    <ul>
+      <li><code>int</code> для целых, <code>string</code> для текста, <code>decimal</code> для денег — и почему у <code>1299.90m</code> стоит буква <code>m</code>.</li>
+      <li>Интерполяция: <code>$"{nick}: {age}"</code> подставляет значения вместо склеивания плюсами.</li>
+      <li>Ловушка: <code>double</code> для цены даёт <code>0.30000000000000004</code> там, где ждёшь <code>0.3</code>.</li>
+    </ul>
+
+    <div class="done-row">
+      <a class="btn btn--ghost" href="index.html">← Ко всем урокам</a>
+      <a class="btn btn--primary" href="lesson-02.html">Читать урок 2 целиком</a>
+    </div>
+  </main>
+
+  <footer class="footer">Курс C# · учебные материалы · 2026</footer>
+
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/scripts.js"></script>
+  <script src="assets/js/player.js"></script>
+</body>
+</html>

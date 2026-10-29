@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 1. C# и .NET: первая программа — Курс C#</title>
+  <meta name="description" content="Что такое C# и .NET, как код превращается в программу, установка SDK и первая консольная программа.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <div class="readbar" id="readbar"></div>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="index.html">Все уроки</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <main class="lesson-layout">
+    <aside class="sidebar">
+      <p class="sidebar__title">Уроки</p>
+      <ol id="sidebar-list"></ol>
+      <a class="sidebar__back" href="index.html">← К списку уроков</a>
+    </aside>
+
+    <article class="lesson">
+      <p class="eyebrow">Урок 01 · 15 минут · консоль</p>
+      <h1>C# и .NET: первая программа</h1>
+      <p class="lead">C# — это язык, на котором ты пишешь. .NET — платформа, которая твой текст исполняет. Разберёмся, кто из них кто, и запустим первую строку кода.</p>
+
+      <div class="callout callout--tip">
+        <strong>Смотреть или читать</strong>
+        Ту же программу можно посмотреть в <a href="video-01.html">интерактивном видеоразборе</a>: строка набирается по буквам, каждая часть подсвечивается, есть пауза и перемотка.
+      </div>
+
+      <h2>Что такое C#</h2>
+      <p><strong>C#</strong> (произносится «си шарп») придумал Андерс Хейлсберг в Microsoft, первый релиз вышел в 2002 году. С тех пор язык сильно вырос, но идея осталась простой: строгий, предсказуемый и удобный язык для почти любых задач — от консольных утилит до игр на Unity, сайтов на ASP.NET и мобильных приложений.</p>
+      <ul>
+        <li><strong>Строгая типизация.</strong> У каждой переменной есть тип, и компилятор проверяет его до запуска. Большая часть глупых ошибок отлавливается ещё до того, как программа что-то сделает.</li>
+        <li><strong>Объектно-ориентированный.</strong> Почти всё в C# — это класс и его объекты. Подробно будет в шестом уроке.</li>
+        <li><strong>Компилируемый.</strong> Код сначала собирается в отдельный файл, а не выполняется построчно, как в Python.</li>
+        <li><strong>Кроссплатформенный.</strong> Один и тот же код работает на Windows, Linux и macOS.</li>
+      </ul>
+
+      <h2>Как код превращается в программу</h2>
+      <p>Ты пишешь текст в файле <code>.cs</code>. Дальше в дело вступают две программы: компилятор и среда выполнения. Программа на C# никогда не исполняется напрямую — это важно понять сразу.</p>
+
+      <figure class="figure">
+        <img src="assets/img/compile.svg" alt="Схема: файл Program.cs, компилятор Roslyn, IL-код, среда CLR с JIT и процессор" width="990" height="300">
+        <figcaption>Четыре шага от текста до работающей программы. Шаг с IL — причина, по которой C# работает на разных системах.</figcaption>
+      </figure>
+
+      <p>Сначала компилятор <strong>Roslyn</strong> проверяет синтаксис и превращает код в <strong>IL</strong> — промежуточный язык, одинаковый для всех операционных систем. Потом среда <strong>CLR</strong> со встроенным JIT-компилятором на ходу переводит IL в машинные команды конкретного процессора. Поэтому один и тот же файл запускается и на Windows, и на Linux.</p>
+
+      <div class="callout callout--tip">
+        <strong>Аналогия</strong>
+        IL — это как рецепт на универсальном языке кухни. Повар на каждой кухне читает его и готовит блюдо своими приборами. Рецепт один, кухни разные.
+      </div>
+
+      <h2>Установка</h2>
+      <p>Нужен <strong>.NET SDK</strong> — он включает и компилятор, и среду выполнения, и команду <code>dotnet</code>. На Windows проще всего через <code>winget</code>:</p>
+
+      <div class="code">
+        <div class="code__bar"><span>PowerShell</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">winget install Microsoft.DotNet.SDK.10</code></pre>
+      </div>
+
+      <p>Если у тебя уже стоит .NET 8 — тоже подойдёт, весь курс работает и на нём. Проверка после установки (в новом окне терминала):</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Терминал</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">dotnet --version</code></pre>
+      </div>
+
+      <p>Если в ответ появилось что-то вроде <code>10.0.100</code> — всё готово.</p>
+
+      <h2>Создаём проект</h2>
+      <p>Проект на C# — это папка с файлом <code>.csproj</code> (настройки) и файлами кода. Создать консольный проект и сразу запустить:</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Терминал</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">dotnet new console -o Hello
+cd Hello
+dotnet run</code></pre>
+      </div>
+
+      <p>Команда <code>dotnet new console</code> создаёт папку <code>Hello</code> с готовым файлом <code>Program.cs</code>. Внутри уже лежит код, который печатает «Hello, World!». <code>dotnet run</code> собирает проект и запускает его.</p>
+
+      <h2>Разбираем первую программу</h2>
+      <p>Заменим содержимое <code>Program.cs</code> на своё:</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">// Первая программа: вывод в консоль
+Console.WriteLine("Привет, мир!");
+Console.WriteLine(2 + 2);</code></pre>
+      </div>
+
+      <p>Запускаем снова <code>dotnet run</code> — в консоли появляются две строки. Разберём по частям одну команду:</p>
+
+      <ul>
+        <li><code>Console</code> — класс, который представляет терминал. С большой буквы, потому что имена классов в C# пишут с заглавной.</li>
+        <li><code>.</code> — обращение внутрь класса: «возьми у Console вот этот метод».</li>
+        <li><code>WriteLine</code> — метод, который печатает строку и переводит курсор на новую строку.</li>
+        <li><code>("Привет, мир!")</code> — аргумент: то, что метод должен напечатать.</li>
+        <li><code>;</code> — конец оператора. В C# почти каждая инструкция заканчивается точкой с запятой.</li>
+      </ul>
+
+      <p>Современный C# разрешает писать код без класса и метода <code>Main</code> — это называется <em>top-level statements</em>. Такой файл и есть вся программа. Полная, «классическая» запись того же самого выглядит так:</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs — классический вариант</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Привет, мир!");
+    }
+}</code></pre>
+      </div>
+
+      <p>Класс <code>Program</code> — контейнер. Точка входа программы — метод <code>Main</code>: C# ищет именно его и начинает выполнение оттуда. Дальше в курсе мы будем пользоваться короткой записью, чтобы не тратить место на обёртку.</p>
+
+      <h2>Что ещё умеет Console</h2>
+
+      <table>
+        <thead>
+          <tr><th>Команда</th><th>Что делает</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Console.WriteLine("текст")</code></td><td>печатает строку и переводит курсор на новую</td></tr>
+          <tr><td><code>Console.Write("текст")</code></td><td>печатает строку без перевода строки</td></tr>
+          <tr><td><code>Console.ReadLine()</code></td><td>читает то, что ввёл пользователь, и возвращает строку</td></tr>
+          <tr><td><code>Console.ReadKey()</code></td><td>ждёт нажатия клавиши, не показывая её на экране</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Ошибки, на которых спотыкаются все</h2>
+      <div class="callout callout--warn">
+        <strong>Четыре классики</strong>
+        Забытая точка с запятой. <code>console</code> вместо <code>Console</code> — C# различает регистр букв. Кавычки-ёлочки «вот такие» вместо обычных <code>"вот таких"</code> — компилятор их не понимает. И запуск <code>dotnet run</code> не из папки проекта.
+      </div>
+
+      <p>Компилятор не просто ругается: он показывает номер строки и столбца. Читай сообщение с конца — там обычно написано, чего именно он ждал.</p>
+
+      <div class="quiz" data-correct="1">
+        <div class="quiz__label">Проверь себя</div>
+        <div class="quiz__q">В строке <code>Console.WriteLine("Привет")</code> забыли точку с запятой. Что произойдёт?</div>
+        <ul class="quiz__opts">
+          <li><button class="quiz__opt" type="button">Программа запустится и просто не выведет эту строку</button></li>
+          <li><button class="quiz__opt" type="button">Проект не соберётся, компилятор укажет строку с ошибкой</button></li>
+          <li><button class="quiz__opt" type="button">C# сам добавит точку с запятой при запуске</button></li>
+        </ul>
+        <div class="quiz__result" data-explain="Синтаксис проверяется до запуска: без точки с запятой оператор считается незаконченным, поэтому сборка падает с ошибкой CS1002."></div>
+      </div>
+
+      <div class="task">
+        <div class="task__label">Задание</div>
+        <p>Выведи в консоль две строки: своё имя и свой возраст (числом, без кавычек).</p>
+        <p>Усложнённый вариант: спроси имя у пользователя через <code>Console.ReadLine()</code> и поздоровайся.</p>
+
+        <details class="solution">
+          <summary>Показать решение</summary>
+          <div class="solution__body">
+            <div class="code">
+              <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+              <pre><code class="lang-cs">// простое задание
+Console.WriteLine("sneg");
+Console.WriteLine(17);
+
+// усложнённое: имя вводит пользователь
+Console.Write("Как тебя зовут? ");
+string name = Console.ReadLine();
+Console.WriteLine($"Привет, {name}!");</code></pre>
+            </div>
+            <p>Символ <code>$</code> перед строкой включает подстановку значений в фигурных скобках — подробно разберём в следующем уроке.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="done-row">
+        <button class="btn-done" type="button" data-done="1">Отметить урок пройденным</button>
+        <span class="done-hint">Прогресс сохраняется в браузере</span>
+      </div>
+
+      <nav class="lesson-nav" id="lesson-nav"></nav>
+    </article>
+  </main>
+
+  <footer class="footer">Курс C# · учебные материалы · 2026</footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

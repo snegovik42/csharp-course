@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 480" width="940" height="480" role="img" aria-labelledby="flowTitle">
+  <title id="flowTitle">Блок-схема ветвления if-else и цикла for</title>
+
+  <defs>
+    <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A7194"/>
+    </marker>
+  </defs>
+
+  <rect width="940" height="480" fill="#F8F6FC"/>
+
+  <!-- Панель А -->
+  <rect x="20" y="60" width="440" height="400" rx="12" fill="#FFFFFF" stroke="#D8D2E8" stroke-width="1.5"/>
+  <text x="40" y="90" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1B1725">Ветвление · if / else</text>
+
+  <rect x="180" y="110" width="120" height="34" rx="17" fill="#F1E4F6" stroke="#68217A" stroke-width="1.4"/>
+  <text x="240" y="132" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#4C1557">Начало</text>
+  <line x1="240" y1="144" x2="240" y2="166" stroke="#7A7194" stroke-width="1.6" marker-end="url(#a4)"/>
+
+  <polygon points="240,168 340,215 240,262 140,215" fill="#FBFAFE" stroke="#68217A" stroke-width="1.6"/>
+  <text x="240" y="220" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#1B1725">оценка ≥ 4?</text>
+
+  <!-- ветка ДА -->
+  <line x1="140" y1="215" x2="112" y2="215" stroke="#7A7194" stroke-width="1.6"/>
+  <line x1="110" y1="213" x2="110" y2="313" stroke="#7A7194" stroke-width="1.6" marker-end="url(#a4)"/>
+  <text x="126" y="205" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#0E7C6B">ДА</text>
+
+  <rect x="50" y="315" width="120" height="40" rx="8" fill="#E4F2EF" stroke="#0E7C6B" stroke-width="1.5"/>
+  <text x="110" y="341" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#0A5A4E">Зачёт</text>
+
+  <!-- ветка НЕТ -->
+  <line x1="240" y1="262" x2="240" y2="313" stroke="#7A7194" stroke-width="1.6" marker-end="url(#a4)"/>
+  <text x="256" y="292" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#A9501A">НЕТ</text>
+
+  <rect x="180" y="315" width="120" height="40" rx="8" fill="#FBEBE0" stroke="#A9501A" stroke-width="1.5"/>
+  <text x="240" y="341" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#8A3F12">Пересдача</text>
+
+  <!-- сход -->
+  <polyline points="110,355 110,398 240,398" fill="none" stroke="#7A7194" stroke-width="1.6"/>
+  <line x1="240" y1="355" x2="240" y2="404" stroke="#7A7194" stroke-width="1.6" marker-end="url(#a4)"/>
+  <rect x="180" y="408" width="120" height="34" rx="17" fill="#F1E4F6" stroke="#68217A" stroke-width="1.4"/>
+  <text x="240" y="430" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#4C1557">Конец</text>
+
+  <!-- Панель Б -->
+  <rect x="480" y="60" width="440" height="400" rx="12" fill="#FFFFFF" stroke="#D8D2E8" stroke-width="1.5"/>
+  <text x="500" y="90" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1B1725">Цикл · for (int i = 0; i &lt; 3; i++)</text>
+
+  <rect x="630" y="108" width="140" height="34" rx="8" fill="#FBFAFE" stroke="#D8D2E8" stroke-width="1.4"/>
+  <text x="700" y="130" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#1B1725">int i = 0</text>
+  <line x1="700" y1="142" x2="700" y2="166" stroke="#7A7194" stroke-width="1.6" marker-end="url(#a4)"/>
+
+  <polygon points="700,168 795,215 700,262 605,215" fill="#FBFAFE" stroke="#68217A" stroke-width="1.6"/>
+  <text x="700" y="220" text-anchor="middle" font-family="Consolas, monospace" font-size="12.5" fill="#1B1725">i &lt; 3?</text>
+
+  <line x1="700" y1="262" x2="700" y2="284" stroke="#7A7194" stroke-width="1.6" marker-end="url(#a4)"/>
+  <text x="716" y="278" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#0E7C6B">ДА</text>
+
+  <rect x="622" y="286" width="156" height="36" rx="8" fill="#E4F2EF" stroke="#0E7C6B" stroke-width="1.5"/>
+  <text x="700" y="309" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#0A5A4E">тело цикла</text>
+
+  <line x1="700" y1="322" x2="700" y2="342" stroke="#7A7194" stroke-width="1.6" marker-end="url(#a4)"/>
+  <rect x="645" y="344" width="110" height="34" rx="8" fill="#FBFAFE" stroke="#D8D2E8" stroke-width="1.4"/>
+  <text x="700" y="366" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#1B1725">i++</text>
+
+  <!-- возврат к условию -->
+  <polyline points="755,361 860,361 860,215" fill="none" stroke="#68217A" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <line x1="860" y1="215" x2="799" y2="215" stroke="#68217A" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#a4)"/>
+
+  <!-- ветка НЕТ -->
+  <polyline points="605,215 560,215 560,415" fill="none" stroke="#7A7194" stroke-width="1.6" marker-end="url(#a4)"/>
+  <text x="580" y="204" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="600" fill="#A9501A">НЕТ</text>
+  <rect x="498" y="417" width="124" height="32" rx="16" fill="#F1E4F6" stroke="#68217A" stroke-width="1.4"/>
+  <text x="560" y="438" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#4C1557">выход</text>
+</svg>

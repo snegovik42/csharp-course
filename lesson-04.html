@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 4. Массивы и списки — Курс C#</title>
+  <meta name="description" content="Массивы фиксированной длины, List&lt;T&gt;, индексы, foreach, LINQ: Sum, Average, Max, Count.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <div class="readbar" id="readbar"></div>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="index.html">Все уроки</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <main class="lesson-layout">
+    <aside class="sidebar">
+      <p class="sidebar__title">Уроки</p>
+      <ol id="sidebar-list"></ol>
+      <a class="sidebar__back" href="index.html">← К списку уроков</a>
+    </aside>
+
+    <article class="lesson">
+      <p class="eyebrow">Урок 04 · 20 минут · данные</p>
+      <h1>Массивы и списки</h1>
+      <p class="lead">Хранить пять оценок в пяти переменных можно, сто — уже нет. Для этого есть массивы и списки: одна переменная, внутри много значений.</p>
+
+      <div class="callout callout--tip">
+        <strong>Смотреть или читать</strong>
+        Есть <a href="video-04.html">видеоразбор этого урока</a>: средний балл через foreach и растущий List.
+      </div>
+
+      <h2>Массив</h2>
+      <p>Массив создаётся с фиксированной длиной и дальше не растёт. Индексы начинаются с нуля: первый элемент — это <code>[0]</code>.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">int[] scores = new int[5];   // пять ячеек, пока все нули
+
+scores[0] = 5;
+scores[1] = 4;
+scores[2] = 3;
+scores[3] = 5;
+scores[4] = 4;
+
+Console.WriteLine(scores.Length);   // 5
+Console.WriteLine(scores[0]);       // 5
+Console.WriteLine(scores[4]);       // 4
+
+// короткая запись с готовыми значениями
+int[] marks = { 5, 4, 3, 5, 4 };
+string[] players = { "sneg", "mark", "dasha" };</code></pre>
+      </div>
+
+      <figure class="figure">
+        <img src="assets/img/arrays.svg" alt="Массив из пяти ячеек с индексами от нуля и список, куда можно добавлять элементы" width="900" height="430">
+        <figcaption>У массива длина известна заранее. Список выделяет место под новые элементы сам.</figcaption>
+      </figure>
+
+      <div class="callout callout--danger">
+        <strong>Выход за границы</strong>
+        В массиве из пяти элементов последний индекс — <code>4</code>. Обращение к <code>scores[5]</code> выбросит <code>IndexOutOfRangeException</code> и остановит программу. Компилятор такое не поймает: он не знает, какой индекс ты посчитаешь в рантайме.
+      </div>
+
+      <h2>Проход по массиву</h2>
+      <p>Классический сценарий: пройтись по всем элементам и что-то посчитать.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">int[] marks = { 5, 4, 3, 5, 4 };
+
+int total = 0;
+
+foreach (int m in marks)
+{
+    total += m;
+}
+
+double avg = (double)total / marks.Length;
+Console.WriteLine($"Сумма: {total}, средний балл: {avg:F2}");
+
+// Сумма: 21, средний балл: 4,20</code></pre>
+      </div>
+
+      <p>Приведение <code>(double)</code> обязательно: без него C# поделит целое на целое и отбросит дробную часть, получив <code>4</code> вместо <code>4.2</code>. <code>{avg:F2}</code> оставляет два знака после запятой.</p>
+
+      <h2>Список: List&lt;T&gt;</h2>
+      <p>Список — тот же массив, но с кнопкой «добавить». Длина меняется на ходу, а память выделяется автоматически. В угловых скобках указывается тип элементов.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">List&lt;string&gt; names = new List&lt;string&gt;();
+
+names.Add("sneg");
+names.Add("mark");
+names.Add("dasha");
+
+Console.WriteLine(names.Count);              // 3 — не Length, а Count
+
+names.Remove("mark");
+Console.WriteLine(names.Count);              // 2
+Console.WriteLine(names.Contains("sneg"));   // True
+
+names.Sort();
+foreach (string n in names)
+{
+    Console.WriteLine(n);                    // dasha, sneg
+}</code></pre>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th></th><th>Массив <code>int[]</code></th><th>Список <code>List&lt;int&gt;</code></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Длина</td><td>фиксированная, задаётся при создании</td><td>меняется сама</td></tr>
+          <tr><td>Добавить элемент</td><td>нельзя без пересоздания</td><td><code>Add()</code></td></tr>
+          <tr><td>Размер</td><td><code>Length</code></td><td><code>Count</code></td></tr>
+          <tr><td>Скорость</td><td>чуть быстрее</td><td>чуть медленнее</td></tr>
+          <tr><td>Когда брать</td><td>данные известны и не меняются</td><td>почти всегда</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--tip">
+        <strong>Практическое правило</strong>
+        Не уверен, что выбрать, — бери <code>List</code>. Массив оставь для случаев, когда количество элементов известно заранее и меняться не будет.
+      </div>
+
+      <h2>Пара строк вместо цикла</h2>
+      <p>С <code>using System.Linq;</code> появляются готовые операции над коллекциями — считать сумму вручную уже не нужно.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">using System.Linq;
+
+int[] marks = { 5, 4, 3, 5, 4 };
+
+Console.WriteLine(marks.Sum());                 // 21
+Console.WriteLine(marks.Average());             // 4.2
+Console.WriteLine(marks.Max());                 // 5
+Console.WriteLine(marks.Count(m =&gt; m &gt;= 5));   // 2 — сколько пятёрок</code></pre>
+      </div>
+
+      <div class="quiz" data-correct="0">
+        <div class="quiz__label">Проверь себя</div>
+        <div class="quiz__q">Есть <code>int[] scores = new int[5];</code>. Что произойдёт при обращении к <code>scores[5]</code>?</div>
+        <ul class="quiz__opts">
+          <li><button class="quiz__opt" type="button">Ошибка IndexOutOfRangeException во время выполнения</button></li>
+          <li><button class="quiz__opt" type="button">Вернётся 0, потому что ячейка пустая</button></li>
+          <li><button class="quiz__opt" type="button">Массив сам увеличится до шести элементов</button></li>
+        </ul>
+        <div class="quiz__result" data-explain="Индексы идут от 0 до Length - 1, то есть от 0 до 4. Пятый индекс уже за пределами массива, и CLR выбрасывает исключение прямо во время работы программы."></div>
+      </div>
+
+      <div class="task">
+        <div class="task__label">Задание</div>
+        <p>Есть массив оценок <code>{ 5, 4, 3, 5, 4, 2, 5 }</code>. Выведи средний балл и количество пятёрок. Сделай это двумя способами: обычным циклом и через LINQ.</p>
+
+        <details class="solution">
+          <summary>Показать решение</summary>
+          <div class="solution__body">
+            <div class="code">
+              <div class="code__bar"><span>Циклом</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+              <pre><code class="lang-cs">int[] marks = { 5, 4, 3, 5, 4, 2, 5 };
+
+int sum = 0;
+int fives = 0;
+
+foreach (int m in marks)
+{
+    sum += m;
+    if (m == 5) fives++;
+}
+
+Console.WriteLine($"Средний балл: {(double)sum / marks.Length:F2}");
+Console.WriteLine($"Пятёрок: {fives}");</code></pre>
+            </div>
+            <div class="code">
+              <div class="code__bar"><span>Через LINQ</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+              <pre><code class="lang-cs">using System.Linq;
+
+int[] marks = { 5, 4, 3, 5, 4, 2, 5 };
+
+Console.WriteLine($"Средний балл: {marks.Average():F2}");
+Console.WriteLine($"Пятёрок: {marks.Count(m =&gt; m == 5)}");</code></pre>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="done-row">
+        <button class="btn-done" type="button" data-done="4">Отметить урок пройденным</button>
+        <span class="done-hint">Прогресс сохраняется в браузере</span>
+      </div>
+
+      <nav class="lesson-nav" id="lesson-nav"></nav>
+    </article>
+  </main>
+
+  <footer class="footer">Курс C# · учебные материалы · 2026</footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

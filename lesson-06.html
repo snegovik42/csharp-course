@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 6. Классы и ООП — Курс C#</title>
+  <meta name="description" content="Класс и объект, поля и свойства, конструктор, инкапсуляция, наследование, virtual и override.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <div class="readbar" id="readbar"></div>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="index.html">Все уроки</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <main class="lesson-layout">
+    <aside class="sidebar">
+      <p class="sidebar__title">Уроки</p>
+      <ol id="sidebar-list"></ol>
+      <a class="sidebar__back" href="index.html">← К списку уроков</a>
+    </aside>
+
+    <article class="lesson">
+      <p class="eyebrow">Урок 06 · 25 минут · ООП</p>
+      <h1>Классы и ООП</h1>
+      <p class="lead">Класс — это чертёж. Объект — деталь, сделанная по чертежу. Всё остальное в ООП строится на этой простой паре.</p>
+
+      <div class="callout callout--tip">
+        <strong>Смотреть или читать</strong>
+        Есть <a href="video-06.html">видеоразбор этого урока</a>: конструктор, private set и один объект от создания до вывода.
+      </div>
+
+      <h2>Класс и объект</h2>
+      <p>До этого данные и код жили отдельно: переменные сами по себе, методы сами по себе. Класс связывает их: описывает, какие данные есть у сущности и что она умеет делать.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">Player p = new Player();
+p.Nick = "sneg";
+p.Balance = 1000;
+
+Console.WriteLine($"{p.Nick}: {p.Balance}₽");   // sneg: 1000₽
+
+class Player
+{
+    public string Nick;
+    public decimal Balance;
+}</code></pre>
+      </div>
+
+      <div class="callout callout--warn">
+        <strong>Классы — в конце файла</strong>
+        В файле с top-level statements сначала идёт код, а объявления классов — после него. Если поставить класс выше, компилятор скажет, что код не может находиться после объявления типа.
+      </div>
+
+      <p><code>new Player()</code> создаёт объект по чертежу: у него свои собственные <code>Nick</code> и <code>Balance</code>. Второй объект — <code>new Player()</code> — никак не связан с первым.</p>
+
+      <h2>Свойства: контроль вместо голого поля</h2>
+      <p>Публичное поле можно испортить снаружи: написать <code>p.Balance = -5000</code> и никто не остановит. Свойство даёт возможность проверить значение перед записью.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">Player p = new Player { Nick = "sneg" };
+p.Deposit(500);
+Console.WriteLine(p.Balance);     // 500
+
+class Player
+{
+    private decimal balance;       // снаружи не видно
+
+    public string Nick { get; set; } = "";
+
+    public decimal Balance
+    {
+        get { return balance; }
+        private set { balance = value; }
+    }
+
+    public void Deposit(decimal amount)
+    {
+        if (amount &lt;= 0)
+        {
+            return;                // отрицательное пополнение отбиваем
+        }
+
+        Balance += amount;
+    }
+}</code></pre>
+      </div>
+
+      <p>Здесь видно три уровня доступа: <code>private</code> — только внутри класса, <code>public</code> — отовсюду, <code>private set</code> — читать можно всем, менять только внутри. Это и есть <strong>инкапсуляция</strong>: класс сам решает, что пускать наружу.</p>
+
+      <h2>Конструктор: объект рождается готовым</h2>
+      <p>Конструктор — метод с именем класса и без возвращаемого типа. Он вызывается при <code>new</code> и задаёт начальное состояние.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">Player a = new Player("sneg", 1000);
+Player b = new Player("mark", 500);
+
+Console.WriteLine(a.Balance);     // 1000
+
+class Player
+{
+    public string Nick { get; }
+    public decimal Balance { get; private set; }
+
+    public Player(string nick, decimal startBalance)
+    {
+        Nick = nick;
+        Balance = startBalance;
+    }
+
+    public void Spend(decimal amount)
+    {
+        if (amount &lt;= Balance)
+        {
+            Balance -= amount;
+        }
+    }
+}</code></pre>
+      </div>
+
+      <p>Теперь невозможно создать игрока без имени и баланса — компилятор потребует оба аргумента. Это лучше, чем объект, у которого половина полей забыта.</p>
+
+      <h2>Наследование</h2>
+      <figure class="figure">
+        <img src="assets/img/oop.svg" alt="Схема классов: базовый класс Игрок и наследники Снайпер и Стример" width="940" height="540">
+        <figcaption>Стрелка с треугольником всегда указывает на родителя. Наследник получает всё, что было у родителя, и добавляет своё.</figcaption>
+      </figure>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">Player a = new Player { Nick = "sneg" };
+Player b = new Streamer { Nick = "mark", Viewers = 120 };
+
+Console.WriteLine(a.Greet());     // Я игрок sneg
+Console.WriteLine(b.Greet());     // Я стример mark, 120 зрителей
+
+class Player
+{
+    public string Nick { get; set; } = "";
+
+    public virtual string Greet()
+    {
+        return $"Я игрок {Nick}";
+    }
+}
+
+class Streamer : Player
+{
+    public int Viewers { get; set; }
+
+    public override string Greet()
+    {
+        return $"Я стример {Nick}, {Viewers} зрителей";
+    }
+}</code></pre>
+      </div>
+
+      <p>Смотри, что произошло в последней строке: переменная объявлена как <code>Player</code>, а метод вызвался из <code>Streamer</code>. Это <strong>полиморфизм</strong> — программа выбирает реализацию по фактическому типу объекта, а не по типу переменной. Слово <code>virtual</code> разрешает переопределение, <code>override</code> его выполняет.</p>
+
+      <h2>Зачем всё это, если можно жить с переменными</h2>
+      <ul>
+        <li><strong>Порядок.</strong> У игрока в одном месте и данные, и поведение. Не нужно искать по файлу, где меняется баланс.</li>
+        <li><strong>Защита.</strong> Некорректное состояние отсекается внутри класса, а не проверяется в двадцати местах снаружи.</li>
+        <li><strong>Расширение.</strong> Новый тип игрока добавляется наследником, а код, который работает с <code>Player</code>, менять не нужно.</li>
+      </ul>
+
+      <div class="quiz" data-correct="2">
+        <div class="quiz__label">Проверь себя</div>
+        <div class="quiz__q">Класс объявлен как <code>class Streamer : Player</code>. Что получит <code>Streamer</code>?</div>
+        <ul class="quiz__opts">
+          <li><button class="quiz__opt" type="button">Только публичные поля, методы придётся писать заново</button></li>
+          <li><button class="quiz__opt" type="button">Ничего — двоеточие просто указывает на похожесть</button></li>
+          <li><button class="quiz__opt" type="button">Все поля и методы Player, включая приватные внутри себя, плюс свои собственные</button></li>
+        </ul>
+        <div class="quiz__result" data-explain="Наследник получает состояние и поведение родителя целиком. Приватные члены он не может вызывать напрямую, но они остаются частью объекта и работают через публичные методы родителя."></div>
+      </div>
+
+      <div class="task">
+        <div class="task__label">Итоговое задание</div>
+        <p>Опиши класс <code>Case</code>: название, цена и метод, который списывает деньги с баланса и возвращает случайный предмет из массива. Если денег не хватает — метод возвращает строку «Не хватает денег» и ничего не списывает.</p>
+        <p>Создай игрока с 1000₽ и открой три кейса по 100₽.</p>
+
+        <details class="solution">
+          <summary>Показать решение</summary>
+          <div class="solution__body">
+            <div class="code">
+              <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+              <pre><code class="lang-cs">decimal balance = 1000;
+Case cheap = new Case("Стартовый", 100);
+
+for (int i = 1; i &lt;= 3; i++)
+{
+    string drop = cheap.Open(ref balance);
+    Console.WriteLine($"Открытие {i}: {drop}  (баланс: {balance}₽)");
+}
+
+// класс — после кода
+class Case
+{
+    private static readonly Random rnd = new Random();
+    private readonly string[] items = { "Бизон", "Лабиринт", "Ночной ужас" };
+
+    public string Name { get; }
+    public decimal Price { get; }
+
+    public Case(string name, decimal price)
+    {
+        Name = name;
+        Price = price;
+    }
+
+    public string Open(ref decimal balance)
+    {
+        if (balance &lt; Price)
+        {
+            return "Не хватает денег";
+        }
+
+        balance -= Price;
+        return items[rnd.Next(items.Length)];
+    }
+}</code></pre>
+            </div>
+            <p>Ключ <code>ref</code> позволяет методу изменить баланс вызывающего кода — иначе он работал бы с копией значения. <code>static readonly Random</code> создаётся один раз на весь класс: если делать <code>new Random()</code> при каждом вызове, числа начнут повторяться.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="done-row">
+        <button class="btn-done" type="button" data-done="6">Отметить урок пройденным</button>
+        <span class="done-hint">Прогресс сохраняется в браузере</span>
+      </div>
+
+      <nav class="lesson-nav" id="lesson-nav"></nav>
+    </article>
+  </main>
+
+  <footer class="footer">Курс C# · учебные материалы · 2026</footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

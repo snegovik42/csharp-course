@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 990 300" width="990" height="300" role="img" aria-labelledby="compileTitle">
+  <title id="compileTitle">Путь кода на C#: исходник, компилятор Roslyn, IL-код, CLR с JIT и процессор</title>
+
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A7194"/>
+    </marker>
+  </defs>
+
+  <rect width="990" height="300" fill="#F8F6FC"/>
+
+  <text x="24" y="44" font-family="'Segoe UI', Arial, sans-serif" font-size="17" font-weight="600" fill="#1B1725">Что происходит, когда ты нажимаешь «запустить»</text>
+  <text x="24" y="68" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#5F5872">Программа на C# не выполняется напрямую: у неё на пути четыре превращения.</text>
+
+  <!-- Шаг 1 -->
+  <rect x="24" y="98" width="158" height="76" rx="10" fill="#FFFFFF" stroke="#D8D2E8" stroke-width="1.5"/>
+  <text x="103" y="130" text-anchor="middle" font-family="Consolas, monospace" font-size="13.5" fill="#1B1725">Program.cs</text>
+  <text x="103" y="152" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#5F5872">исходный код</text>
+  <line x1="182" y1="136" x2="220" y2="136" stroke="#7A7194" stroke-width="1.8" marker-end="url(#arrow2)"/>
+
+  <!-- Шаг 2 -->
+  <rect x="224" y="98" width="158" height="76" rx="10" fill="#F1E4F6" stroke="#68217A" stroke-width="1.8"/>
+  <text x="303" y="130" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#4C1557">Компилятор</text>
+  <text x="303" y="152" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#4C1557">Roslyn</text>
+  <line x1="382" y1="136" x2="420" y2="136" stroke="#7A7194" stroke-width="1.8" marker-end="url(#arrow2)"/>
+
+  <!-- Шаг 3 -->
+  <rect x="424" y="98" width="158" height="76" rx="10" fill="#FFFFFF" stroke="#D8D2E8" stroke-width="1.5"/>
+  <text x="503" y="130" text-anchor="middle" font-family="Consolas, monospace" font-size="13.5" fill="#1B1725">IL-код</text>
+  <text x="503" y="152" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#5F5872">промежуточный язык</text>
+  <line x1="582" y1="136" x2="620" y2="136" stroke="#7A7194" stroke-width="1.8" marker-end="url(#arrow2)"/>
+
+  <!-- Шаг 4 -->
+  <rect x="624" y="98" width="158" height="76" rx="10" fill="#DFF3EE" stroke="#0E7C6B" stroke-width="1.8"/>
+  <text x="703" y="130" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#0A5A4E">CLR + JIT</text>
+  <text x="703" y="152" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#0A5A4E">среда выполнения</text>
+  <line x1="782" y1="136" x2="820" y2="136" stroke="#7A7194" stroke-width="1.8" marker-end="url(#arrow2)"/>
+
+  <!-- Шаг 5 -->
+  <rect x="824" y="98" width="142" height="76" rx="10" fill="#FFFFFF" stroke="#D8D2E8" stroke-width="1.5"/>
+  <text x="895" y="130" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#1B1725">Процессор</text>
+  <text x="895" y="152" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#5F5872">машинный код</text>
+
+  <!-- Пояснения под блоками -->
+  <g font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#5F5872">
+    <text x="24" y="200">ты пишешь текст</text>
+    <text x="224" y="200">проверяет синтаксис</text>
+    <text x="424" y="200">одинаков для всех ОС</text>
+    <text x="624" y="200">превращает IL в команды</text>
+    <text x="824" y="200">выполняет команды</text>
+  </g>
+
+  <!-- Итог -->
+  <rect x="24" y="228" width="942" height="46" rx="9" fill="#FFFFFF" stroke="#E2DCEF" stroke-width="1.2"/>
+  <text x="42" y="257" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#1B1725">Из-за шага IL одна и та же сборка работает и на Windows, и на Linux, и на macOS — её доделывает уже CLR на месте.</text>
+</svg>

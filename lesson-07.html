@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 7. Исключения и отладка — Курс C#</title>
+  <meta name="description" content="try, catch, finally, чтение стектрейса, свои исключения и когда ошибку лучше не ловить.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <div class="readbar" id="readbar"></div>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="module-02.html">Модуль 2</a>
+      <a class="topbar__link" href="index.html">Все уроки</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <main class="lesson-layout">
+    <aside class="sidebar">
+      <p class="sidebar__title">Модуль 2</p>
+      <ol>
+        <li><a class="is-active" href="lesson-07.html"><span class="n">07</span><span>Исключения и отладка</span></a></li>
+        <li><a href="module-02.html"><span class="n">08</span><span>Файлы и JSON</span></a></li>
+        <li><a href="module-02.html"><span class="n">09</span><span>Интерфейсы</span></a></li>
+        <li><a href="module-02.html"><span class="n">10</span><span>Dictionary и HashSet</span></a></li>
+        <li><a href="module-02.html"><span class="n">11</span><span>LINQ</span></a></li>
+        <li><a href="module-02.html"><span class="n">12</span><span>async / await</span></a></li>
+      </ol>
+      <a class="sidebar__back" href="module-02.html">← К модулю 2</a>
+    </aside>
+
+    <article class="lesson">
+      <p class="eyebrow">Урок 07 · 22 минуты · модуль 2</p>
+      <h1>Исключения и отладка</h1>
+      <p class="lead">До этого все примеры работали с правильными данными. В реальности пользователь введёт букву вместо числа, а файл окажется занят. Исключения — это способ не упасть молча и не упасть вообще.</p>
+
+      <h2>Что такое исключение</h2>
+      <p>Исключение — это объект, который сигнализирует: «дальше выполнять нельзя». Оно прерывает текущую строку и начинает подниматься вверх по стеку вызовов в поисках того, кто готов его обработать.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">int[] numbers = { 1, 2, 3 };
+
+Console.WriteLine(numbers[5]);   // в массиве всего три элемента
+Console.WriteLine("Эта строка уже не выполнится");</code></pre>
+      </div>
+
+      <p>Программа не «пропустит» ошибку и не напечатает ноль. Она остановится на пятой строке и завершится с ненулевым кодом.</p>
+
+      <h2>Как читать стектрейс</h2>
+      <p>Текст, который вываливается в консоль, выглядит страшно, но устроен просто: сверху — что случилось, ниже — где именно.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Вывод в консоли</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">Unhandled exception. System.IndexOutOfRangeException:
+  Index was outside the bounds of the array.
+   at Program.&lt;Main&gt;$(String[] args)
+  in C:\dev\csharp\Hello\Program.cs:line 3</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <strong>Читай снизу вверх</strong>
+        Последняя строка с <code>in ...Program.cs:line 3</code> — это место в <em>твоём</em> коде. Всё, что выше и написано непонятными именами, — внутренности .NET. Смотри сначала на свой файл и номер строки.
+      </div>
+
+      <h2>try / catch / finally</h2>
+      <p>Блок <code>try</code> — «попробуй это сделать». <code>catch</code> — «если сломается, сделай вот так». <code>finally</code> — «сделай в любом случае».</p>
+
+      <figure class="figure">
+        <img src="assets/img/exceptions.svg" alt="Схема: блок try передаёт исключение в catch, затем выполняется finally" width="940" height="310">
+        <figcaption>Исключение прерывает try и уходит в catch. finally выполняется всегда — и при ошибке, и без неё.</figcaption>
+      </figure>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">try
+{
+    int[] numbers = { 1, 2, 3 };
+    Console.WriteLine(numbers[5]);
+}
+catch (IndexOutOfRangeException ex)
+{
+    Console.WriteLine($"Вышли за границу массива: {ex.Message}");
+}
+finally
+{
+    Console.WriteLine("Блок finally выполнился");
+}
+
+Console.WriteLine("Программа продолжает работу");</code></pre>
+      </div>
+
+      <p>Вывод будет такой: сообщение из <code>catch</code>, строка из <code>finally</code> и последняя строка. Программа не упала.</p>
+
+      <h2>Ловить конкретное, а не «всё подряд»</h2>
+      <p><code>catch (Exception)</code> без разбора ловит вообще всё, включая ошибки, которые ты не ожидал. Лучше перечислить типы, с которыми действительно умеешь работать.</p>
+
+      <table>
+        <thead>
+          <tr><th>Исключение</th><th>Когда возникает</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>FormatException</code></td><td>строка не похожа на число при <code>Parse</code></td></tr>
+          <tr><td><code>DivideByZeroException</code></td><td>деление целого на ноль</td></tr>
+          <tr><td><code>IndexOutOfRangeException</code></td><td>индекс за границей массива</td></tr>
+          <tr><td><code>NullReferenceException</code></td><td>обращение к <code>null</code> вместо объекта</td></tr>
+          <tr><td><code>InvalidOperationException</code></td><td>объект не в том состоянии для операции</td></tr>
+          <tr><td><code>IOException</code></td><td>файл занят, нет доступа, диск отвалился</td></tr>
+          <tr><td><code>ArgumentException</code></td><td>методу передали неподходящий аргумент</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">try
+{
+    int a = int.Parse(Console.ReadLine() ?? "");
+    int b = int.Parse(Console.ReadLine() ?? "");
+
+    Console.WriteLine(a / b);
+}
+catch (FormatException)
+{
+    Console.WriteLine("Это не число");
+}
+catch (DivideByZeroException)
+{
+    Console.WriteLine("На ноль делить нельзя");
+}</code></pre>
+      </div>
+
+      <p>Порядок важен: если первым поставить <code>catch (Exception)</code>, он перехватит всё и до конкретных обработчиков дело не дойдёт — компилятор такое даже запретит.</p>
+
+      <h2>throw: сообщать об ошибке самому</h2>
+      <p>Встроенные исключения ловят чужие ошибки. Свои проверки делаются через <code>throw</code>: метод не молчит, а честно говорит, что ему дали ерунду.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">Console.WriteLine(Discount(1000, 10));    // 900
+Console.WriteLine(Discount(1000, 150));   // исключение
+
+static decimal Discount(decimal price, int percent)
+{
+    if (percent &lt; 0 || percent &gt; 100)
+    {
+        throw new ArgumentOutOfRangeException(
+            nameof(percent), "Скидка должна быть от 0 до 100");
+    }
+
+    return price * (1 - percent / 100.0m);
+}</code></pre>
+      </div>
+
+      <div class="callout callout--warn">
+        <strong>Исключение — не замена if</strong>
+        Проверять условия обычным <code>if</code> дешевле. Исключения бросают, когда ситуация действительно ломает нормальную работу метода: неверный аргумент, отсутствующий файл, нарушенный контракт.
+      </div>
+
+      <h2>Когда исключение — плохой выбор</h2>
+      <p>Ввод пользователя — самый частый случай «ожидаемой» ошибки. Гонять его через try/catch дорого и громоздко, поэтому для чисел есть <code>TryParse</code>.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">Console.Write("Возраст: ");
+string input = Console.ReadLine() ?? "";
+
+if (int.TryParse(input, out int age))
+{
+    Console.WriteLine($"Через год тебе будет {age + 1}");
+}
+else
+{
+    Console.WriteLine("Нужно целое число");
+}</code></pre>
+      </div>
+
+      <h2>Главная ошибка новичка: проглотить ошибку</h2>
+      <p>Пустой <code>catch</code> выглядит как «программа больше не падает». На самом деле он прячет проблему: дальше код работает с неправильными данными, и настоящая причина всплывёт через двадцать строк, уже неузнаваемой.</p>
+
+      <div class="code">
+        <div class="code__bar"><span>Как не надо и как надо</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+        <pre><code class="lang-cs">// плохо: ошибка исчезла бесследно
+try
+{
+    SaveInventory();
+}
+catch { }
+
+// лучше: сообщить и не притворяться, что всё хорошо
+try
+{
+    SaveInventory();
+}
+catch (IOException ex)
+{
+    Console.WriteLine($"Не удалось сохранить: {ex.Message}");
+    throw;      // пусть вызывающий код тоже знает о проблеме
+}</code></pre>
+      </div>
+
+      <div class="quiz" data-correct="2">
+        <div class="quiz__label">Проверь себя</div>
+        <div class="quiz__q">Когда выполняется код в блоке <code>finally</code>?</div>
+        <ul class="quiz__opts">
+          <li><button class="quiz__opt" type="button">Только если в try было исключение</button></li>
+          <li><button class="quiz__opt" type="button">Только если исключения не было</button></li>
+          <li><button class="quiz__opt" type="button">Всегда — и с ошибкой, и без, и даже при return</button></li>
+        </ul>
+        <div class="quiz__result" data-explain="finally нужен именно для гарантированной уборки: закрыть файл, освободить соединение, вернуть блокировку. Он выполняется при любом выходе из try."></div>
+      </div>
+
+      <div class="task">
+        <div class="task__label">Задание</div>
+        <p>Сделай калькулятор деления: пользователь вводит два числа, программа печатает результат. Буква вместо числа и деление на ноль должны приводить к понятному сообщению, а не к падению.</p>
+        <p>Усложнение: пусть после ошибки программа предлагает ввести числа заново, пока не получится.</p>
+
+        <details class="solution">
+          <summary>Показать решение</summary>
+          <div class="solution__body">
+            <div class="code">
+              <div class="code__bar"><span>Program.cs</span><button class="code__copy" type="button" data-copy>Копировать</button></div>
+              <pre><code class="lang-cs">while (true)
+{
+    try
+    {
+        Console.Write("Первое число: ");
+        int a = int.Parse(Console.ReadLine() ?? "");
+
+        Console.Write("Второе число: ");
+        int b = int.Parse(Console.ReadLine() ?? "");
+
+        Console.WriteLine($"Результат: {(double)a / b}");
+        break;                      // получилось — выходим из цикла
+    }
+    catch (FormatException)
+    {
+        Console.WriteLine("Это не число. Попробуй ещё раз.\n");
+    }
+    catch (DivideByZeroException)
+    {
+        Console.WriteLine("На ноль делить нельзя. Попробуй ещё раз.\n");
+    }
+}</code></pre>
+            </div>
+            <p>Обрати внимание: <code>break</code> стоит внутри <code>try</code>, и это нормально — <code>finally</code> (если бы он был) всё равно выполнился бы.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="done-row">
+        <button class="btn-done" type="button" data-done="7">Отметить урок пройденным</button>
+        <span class="done-hint">Прогресс модуля 2 виден на его странице</span>
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="module-02.html"><span>← Модуль 2</span>Вернуться к программе</a>
+        <a class="next" href="module-02.html"><span>Урок 8 →</span>Файлы и JSON — в разработке</a>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="footer">Курс C# · учебные материалы · 2026</footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

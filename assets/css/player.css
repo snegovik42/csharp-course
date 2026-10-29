@@ -1,0 +1,442 @@
+/* ===========================================================
+   Интерактивный «видеоурок»: сцена, плеер, контролы
+   =========================================================== */
+
+.player {
+  margin: 30px 0 0;
+}
+
+/* ---------- Сцена ---------- */
+.stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 12px;
+  padding: 14px;
+  background: #0F0C16;
+  border: 1px solid #2A2438;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px -32px rgba(15, 12, 22, .75);
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 340px;
+  background: #151020;
+  border: 1px solid #271F38;
+  border-radius: 11px;
+  overflow: hidden;
+}
+
+.pane__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  background: #1B1526;
+  border-bottom: 1px solid #271F38;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #8B82A3;
+  flex: 0 0 auto;
+}
+
+.pane__dots { display: inline-flex; gap: 4px; }
+.pane__dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3B3350;
+  display: block;
+}
+.pane__dots i:first-child { background: #E06C75; }
+.pane__dots i:nth-child(2) { background: #E5C07B; }
+.pane__dots i:nth-child(3) { background: #98C379; }
+
+.pane__body {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 14px 16px;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.85;
+  color: #E9E3F4;
+  white-space: pre;
+  tab-size: 4;
+}
+
+.pane__body--out { font-size: 13px; line-height: 1.9; white-space: pre-wrap; }
+
+/* подсветка синтаксиса внутри сцены */
+.s-type { color: #7FD3C8; }
+.s-kw { color: #D18BE8; }
+.s-str { color: #9ED97F; }
+.s-num { color: #F2A96B; }
+.s-com { color: #7C7396; font-style: italic; }
+
+.code-line { display: block; min-height: 1.85em; }
+
+.s-type, .s-kw, .s-str, .s-num, .code-line > span[data-hl] {
+  border-radius: 4px;
+  transition: background .18s, box-shadow .18s;
+}
+
+.hl {
+  background: rgba(198, 139, 226, .22);
+  box-shadow: 0 0 0 3px rgba(198, 139, 226, .22);
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  vertical-align: -.18em;
+  background: #C68BE2;
+  animation: blink 1.05s steps(1) infinite;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+.out-line { display: block; }
+.out-line--dim { color: #8B82A3; }
+.out-line--ok { color: #8FD9A8; }
+
+/* бейдж с названием главы */
+.stage__badge {
+  position: absolute;
+  top: -11px;
+  left: 18px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: #241B33;
+  border: 1px solid #3B2F52;
+  color: #C9BEE0;
+  font-size: 11px;
+  letter-spacing: .04em;
+  font-family: var(--font-mono);
+  z-index: 2;
+}
+
+.stage__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  border: 1px solid rgba(198, 139, 226, .55);
+  background: rgba(23, 17, 32, .82);
+  color: #EFEAF7;
+  font-size: 26px;
+  line-height: 1;
+  padding-left: 5px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  z-index: 3;
+  backdrop-filter: blur(4px);
+  transition: transform .15s, background .15s;
+}
+.stage__play:hover { transform: scale(1.06); background: rgba(40, 30, 56, .95); }
+.stage__play[hidden] { display: none; }
+
+/* ---------- Субтитры ---------- */
+.cc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+.cc__tag {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.cc__text { color: var(--text); }
+.cc__text:empty::before { content: "…"; color: var(--muted); }
+
+/* ---------- Контролы ---------- */
+.ctl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ctl__btn {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  font-family: "Segoe UI Symbol", var(--font-sans);
+  cursor: pointer;
+  transition: border-color .15s, transform .15s;
+}
+.ctl__btn:hover { border-color: var(--primary); transform: translateY(-1px); }
+.ctl__btn:disabled { opacity: .45; cursor: default; transform: none; }
+
+.ctl__time {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  color: var(--muted);
+  min-width: 92px;
+  text-align: center;
+}
+
+.ctl__speed {
+  flex: 0 0 auto;
+  font: inherit;
+  font-size: .85rem;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.track {
+  position: relative;
+  flex: 1 1 auto;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  outline-offset: 6px;
+}
+
+.track__rail {
+  position: relative;
+  width: 100%;
+  height: 7px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.track__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.track__knob {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 13px;
+  height: 13px;
+  margin-left: -6.5px;
+  margin-top: -6.5px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  pointer-events: none;
+}
+
+.track__marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.track__mark {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 15px;
+  margin-top: -7.5px;
+  background: var(--line);
+}
+
+/* ---------- Главы ---------- */
+.chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+
+.chapters button {
+  font: inherit;
+  font-size: .82rem;
+  padding: 6px 11px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.chapters button:hover { color: var(--text); border-color: var(--primary); }
+.chapters button.is-active {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  font-weight: 600;
+}
+.chapters button .t {
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  opacity: .7;
+  margin-right: 6px;
+}
+
+/* ---------- Проверка посередине ---------- */
+.checkpoint {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(10, 8, 14, .78);
+  backdrop-filter: blur(3px);
+  border-radius: 18px;
+  z-index: 4;
+}
+.checkpoint[hidden] { display: none; }
+
+.checkpoint__card {
+  width: min(100%, 460px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+}
+
+.checkpoint__label {
+  margin: 0 0 6px;
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.checkpoint__q {
+  margin: 0 0 14px;
+  font-weight: 650;
+  font-size: 1.02rem;
+}
+
+.checkpoint__opts { display: grid; gap: 8px; }
+
+.checkpoint__opt {
+  font: inherit;
+  font-size: .93rem;
+  text-align: left;
+  padding: 10px 13px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .14s, background .14s;
+}
+.checkpoint__opt:hover:not(:disabled) { border-color: var(--primary); }
+.checkpoint__opt.ok { border-color: var(--ok); background: var(--ok-soft); font-weight: 600; }
+.checkpoint__opt.bad { border-color: var(--danger); background: var(--danger-soft); }
+.checkpoint__opt:disabled { cursor: default; }
+
+.checkpoint__res {
+  margin: 12px 0 0;
+  font-size: .9rem;
+  color: var(--muted);
+  min-height: 1.2em;
+}
+.checkpoint__res.is-ok { color: var(--ok); font-weight: 600; }
+
+/* ---------- Промо-карточка на главной ---------- */
+.video-promo {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .16s, transform .16s, box-shadow .16s;
+}
+.video-promo:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+.video-promo h2 {
+  margin: 8px 0 6px;
+  padding: 0;
+  border: 0;
+  font-size: 1.25rem;
+}
+.video-promo p { margin: 0; color: var(--muted); font-size: .95rem; }
+.video-promo__play {
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  padding-left: 4px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 19px;
+}
+[data-theme="dark"] .video-promo__play { color: #17121F; }
+
+/* ---------- Страница видеоурока ---------- */
+.video-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+.video-page h1 { margin-bottom: .35em; }
+.video-page .lead { margin-bottom: 1.4em; }
+
+/* ---------- Адаптив ---------- */
+@media (max-width: 820px) {
+  .stage { grid-template-columns: 1fr; }
+  .pane { min-height: 200px; }
+  .pane__body { font-size: 12.5px; line-height: 1.8; }
+  .ctl { flex-wrap: wrap; }
+  .track { order: 5; flex: 1 0 100%; }
+  .ctl__time { min-width: auto; }
+}
+
+@media (max-width: 620px) {
+  .video-page { padding: 22px 16px 60px; }
+  .video-promo { flex-direction: column; align-items: flex-start; }
+  .video-promo__play { width: 46px; height: 46px; }
+  .cc { font-size: .93rem; min-height: 66px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret { animation: none; }
+}

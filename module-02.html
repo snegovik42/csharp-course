@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Модуль 2. Надёжный код — Курс C#</title>
+  <meta name="description" content="Второй модуль курса C#: исключения, файлы и JSON, интерфейсы, коллекции, LINQ, async/await.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    try {
+      var t = localStorage.getItem("cs-course-theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">C#</span> Курс C#</a>
+      <span class="topbar__spacer"></span>
+      <a class="topbar__link" href="index.html">Модуль 1</a>
+      <a class="topbar__link" href="lesson-07.html">Урок 7</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Переключить тему" title="Тема">☾</button>
+    </div>
+  </header>
+
+  <main class="video-page">
+    <p class="eyebrow">Модуль 2 · после основ</p>
+    <h1>Надёжный код</h1>
+    <p class="lead">В первом модуле программы работали, пока всё идёт по плану. Здесь начинается то, из чего состоит настоящая работа: ошибки, файлы, абстракции и данные, которые приходят извне.</p>
+
+    <div class="section__head" style="margin-top: 34px;">
+      <h2 style="border:0; padding:0; margin:0;">Программа модуля</h2>
+      <div class="progress-box">
+        <span id="mod-progress">0 из 6</span>
+        <div class="progress-track"><div class="progress-fill" id="mod-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <a class="card" href="lesson-07.html">
+        <div class="card__top"><span class="card__num">УРОК 07</span><span class="chip chip--accent">готов</span></div>
+        <h3>Исключения и отладка</h3>
+        <p>try / catch / finally, чтение стектрейса, свои исключения и когда ошибку лучше не ловить.</p>
+        <div class="card__meta"><span>22 мин</span><span>·</span><span>консоль</span></div>
+      </a>
+
+      <div class="card" style="cursor: default; opacity: .7;">
+        <div class="card__top"><span class="card__num">УРОК 08</span><span class="chip">план</span></div>
+        <h3>Файлы и JSON</h3>
+        <p>File, Path, Directory, сохранение инвентаря между запусками через System.Text.Json.</p>
+        <div class="card__meta"><span>24 мин</span><span>·</span><span>файлы</span></div>
+      </div>
+
+      <div class="card" style="cursor: default; opacity: .7;">
+        <div class="card__top"><span class="card__num">УРОК 09</span><span class="chip">план</span></div>
+        <h3>Интерфейсы и абстракция</h3>
+        <p>interface, abstract, зачем классу контракт и как он спасает от копипасты в наследниках.</p>
+        <div class="card__meta"><span>20 мин</span><span>·</span><span>ООП</span></div>
+      </div>
+
+      <div class="card" style="cursor: default; opacity: .7;">
+        <div class="card__top"><span class="card__num">УРОК 10</span><span class="chip">план</span></div>
+        <h3>Коллекции: Dictionary и HashSet</h3>
+        <p>Когда список неудобен: быстрый поиск по ключу и проверка на дубликаты за одно действие.</p>
+        <div class="card__meta"><span>22 мин</span><span>·</span><span>данные</span></div>
+      </div>
+
+      <div class="card" style="cursor: default; opacity: .7;">
+        <div class="card__top"><span class="card__num">УРОК 11</span><span class="chip">план</span></div>
+        <h3>LINQ</h3>
+        <p>Where, Select, OrderBy, GroupBy — запросы к коллекциям вместо ручных циклов.</p>
+        <div class="card__meta"><span>24 мин</span><span>·</span><span>данные</span></div>
+      </div>
+
+      <div class="card" style="cursor: default; opacity: .7;">
+        <div class="card__top"><span class="card__num">УРОК 12</span><span class="chip">план</span></div>
+        <h3>async / await</h3>
+        <p>Задачи, асинхронные методы и почему интерфейс не должен замирать на время работы.</p>
+        <div class="card__meta"><span>26 мин</span><span>·</span><span>продвинутое</span></div>
+      </div>
+    </div>
+
+    <h2>Как устроен модуль</h2>
+    <ul>
+      <li>Формат тот же: короткая теория, запускаемый пример, задание со спрятанным решением.</li>
+      <li>Сквозная практика — тот же симулятор кейсов, что и в первом модуле: теперь он будет сохранять инвентарь в файл и считать шансы через LINQ.</li>
+      <li>Уроки 8–12 выходят по мере готовности; порядок можно менять, но 07 и 08 лучше не пропускать.</li>
+    </ul>
+
+    <div class="callout callout--tip">
+      <strong>С чего начать прямо сейчас</strong>
+      Открой <a href="lesson-07.html">урок про исключения</a>. Там ровно одна идея: программа не должна падать, но и прятать ошибки тоже нельзя.
+    </div>
+
+    <div class="done-row">
+      <a class="btn btn--ghost" href="index.html">← К модулю 1</a>
+      <a class="btn btn--primary" href="lesson-07.html">Урок 7: исключения</a>
+    </div>
+  </main>
+
+  <footer class="footer">Курс C# · учебные материалы · 2026</footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function () {
+      try {
+        var done = JSON.parse(localStorage.getItem("cs-course-done") || "[]");
+        var n = done.filter(function (x) { return x >= 7 && x <= 12; }).length;
+        document.getElementById("mod-progress").textContent = n + " из 6";
+        document.getElementById("mod-fill").style.width = Math.round((n / 6) * 100) + "%";
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>

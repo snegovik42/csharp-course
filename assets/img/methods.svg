@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img" aria-labelledby="mTitle">
+  <title id="mTitle">Вызов метода: аргументы уходят внутрь, результат возвращается обратно</title>
+
+  <defs>
+    <marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7A7194"/>
+    </marker>
+    <marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0E7C6B"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="400" fill="#F8F6FC"/>
+  <text x="24" y="40" font-family="'Segoe UI', Arial, sans-serif" font-size="17" font-weight="600" fill="#1B1725">Как работает вызов метода</text>
+
+  <!-- Main -->
+  <rect x="30" y="88" width="250" height="152" rx="10" fill="#FFFFFF" stroke="#D8D2E8" stroke-width="1.5"/>
+  <text x="46" y="114" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#1B1725">Main()</text>
+  <line x1="30" y1="124" x2="280" y2="124" stroke="#E2DCEF" stroke-width="1.2"/>
+  <g font-family="Consolas, 'Cascadia Mono', monospace" font-size="11.5" fill="#1B1725">
+    <text x="46" y="150">double total =</text>
+    <text x="46" y="170">    Скидка(1000, 10);</text>
+    <text x="46" y="200">Console.WriteLine</text>
+    <text x="46" y="220">    (total);</text>
+  </g>
+
+  <!-- Вызов -->
+  <line x1="284" y1="170" x2="344" y2="170" stroke="#7A7194" stroke-width="1.8" marker-end="url(#a5)"/>
+  <text x="314" y="148" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="10.5" fill="#5F5872">аргументы</text>
+  <text x="314" y="190" text-anchor="middle" font-family="Consolas, monospace" font-size="10.5" fill="#68217A">1000, 10</text>
+
+  <!-- Метод -->
+  <rect x="350" y="88" width="350" height="182" rx="10" fill="#FFFFFF" stroke="#68217A" stroke-width="1.8"/>
+  <g font-family="Consolas, 'Cascadia Mono', monospace" font-size="11.5" fill="#1B1725">
+    <text x="366" y="114">static double Скидка(</text>
+    <text x="382" y="134">double price,</text>
+    <text x="382" y="154">int percent)</text>
+  </g>
+  <line x1="350" y1="166" x2="700" y2="166" stroke="#E2DCEF" stroke-width="1.2"/>
+  <g font-family="Consolas, 'Cascadia Mono', monospace" font-size="11.5" fill="#1B1725">
+    <text x="366" y="192">return price *</text>
+    <text x="382" y="212">(1 - percent / 100.0);</text>
+    <text x="366" y="244" fill="#7C7396">// 1000 * 0.9 = 900</text>
+  </g>
+
+  <!-- Возврат -->
+  <path d="M525 270 L525 330 L155 330 L155 246" fill="none" stroke="#0E7C6B" stroke-width="1.8" marker-end="url(#a6)"/>
+  <text x="330" y="350" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#0A5A4E">возвращается результат: 900.0</text>
+
+  <text x="24" y="386" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" fill="#5F5872">Метод не знает, кто его вызвал, — он просто получает данные, считает и отдаёт ответ.</text>
+</svg>
